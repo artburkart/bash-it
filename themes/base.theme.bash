@@ -351,7 +351,10 @@ function ruby_version_prompt {
 }
 
 function k8s_context_prompt {
-  echo -e "$(kubectl config current-context 2> /dev/null)"
+  local ns
+  ns="$(kubectl config view --minify --output 'jsonpath={..namespace}' 2> /dev/null)"
+  ns="${ns:=default}"
+  echo -e "$(kubectl config current-context 2> /dev/null):$ns"
 }
 
 function virtualenv_prompt {
